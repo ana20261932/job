@@ -1,0 +1,59 @@
+{
+  "jobs": [
+    {
+      "position": "Administrative Assistant",
+      "department": "Gauteng Provincial Government",
+      "reference": "GPG/AA/2026/089",
+      "salary_range": "R210,000 - R375,000 per annum",
+      "closing_date": "2026-10-30",
+      "location": "Johannesburg, Gauteng",
+      "requirements": "Matric + Admin experience, office management, communication",
+      "notice_period": "1 month",
+      "category": "Non-IT Administrative"
+    },
+    {
+      "position": "Office Coordinator",
+      "department": "Department of Transport",
+      "reference": "DOT/OC/2026/042",
+      "salary_range": "R215,000 - R380,000 per annum",
+      "closing_date": "2026-10-30",
+      "location": "Pretoria, Gauteng",
+      "requirements": "Matric + Office admin, coordination, admin support",
+      "notice_period": "1 month",
+      "category": "Non-IT Administrative"
+    },
+    {
+      "position": "Grants Administrator",
+      "department": "Department of Social Development",
+      "reference": "DSD/GA/2026/035",
+      "salary_range": "R210,000 - R375,000 per annum",
+      "closing_date": "2026-10-30",
+      "location": "Pretoria, Gauteng",
+      "requirements": "Matric + admin, grants processing, admin skills",
+      "notice_period": "1 month",
+      "category": "Non-IT Administrative"
+    },
+    {
+      "position": "Asset Clerk",
+      "department": "Department of Public Works",
+      "reference": "DPW/AC/2026/067",
+      "salary_range": "R205,000 - R360,000 per annum",
+      "closing_date": "2026-10-30",
+      "location": "Cape Town, Western Cape",
+      "requirements": "Matric + admin, asset management, inventory",
+      "notice_period": "1 month",
+      "category": "Non-IT Administrative"
+    },
+    {
+      "position": "Administrative Officer",
+      "department": "Department of Home Affairs",
+      "reference": "DHA/AO/2026/048",
+      "salary_range": "R235,000 - R420,000 per annum",
+      "closing_date": "2026-10-30",
+      "location": "Pretoria, Gauteng",
+      "requirements": "Matric + admin, office admin, records management",
+      "notice_period": "1 month",
+      "category": "Non-IT Administrative"
+    }
+  ]
+}

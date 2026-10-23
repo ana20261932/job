@@ -1,0 +1,97 @@
+{
+  "application_date": "23/10/2026",
+  "z83_form_number": "Z83 (81/971431)",
+  
+  "personal_info": {
+    "surname": "Nkwe",
+    "full_names": "Fidel Nkwe",
+    "identity_number": "30/09/1994",
+    "passport_number": "",
+    "race": "African",
+    "gender": "Male",
+    "disability": "No",
+    "citizenship": "Yes (South African)",
+    "work_permit": "Yes",
+    "criminal_record": "No",
+    "pending_criminal_case": "No",
+    "public_service_dismissal": "No",
+    "criminal_conviction": "No"
+  },
+  
+  "contact_details": {
+    "preferred_language": "English",
+    "correspondence_method": "Tel",
+    "phone": "064 551 0575",
+    "email": "fidelkekana@gmail.com"
+  },
+  
+  "language_proficiency": {
+    "speak": [
+      {"language": "English", "proficiency": "Good"},
+      {"language": "Setswana", "proficiency": "Good"},
+      {"language": "IsiZulu", "proficiency": "Good"},
+      {"language": "Sepedi", "proficiency": "Good"}
+    ],
+    "write_or_read": [
+      {"language": "English", "proficiency": "Good"}
+    ]
+  },
+  
+  "formal_qualifications": [
+    {"institution": "Cultura High School", "qualification": "Matric", "year": 2013},
+    {"institution": "Pearson Institute For Higher Education", "qualification": "Higher Certificate in IT", "year": 2020}
+  ],
+  
+  "work_experience": [
+    {
+      "employer": "Ginimi Consulting, Midrand, Gauteng",
+      "post": "Software Developer",
+      "from": "03/2023",
+      "to": "12/2023",
+      "reason_for_leaving": "Contract ended/project based",
+      "current_public_service_condition": "No"
+    },
+    {
+      "employer": "PhepanaP, Gauteng, Centurion", 
+      "post": "Web Developer",
+      "from": "09/2018",
+      "to": "11/2018",
+      "reason_for_leaving": "Project completion",
+      "current_public_service_condition": "No"
+    },
+    {
+      "employer": "CawnlayJlus Tech, Bronkhorstspruit, Gauteng",
+      "post": "Graphic Designer", 
+      "from": "07/2016",
+      "to": "11/2018",
+      "reason_for_leaving": "Contract ended",
+      "current_public_service_condition": "No"
+    },
+    {
+      "employer": "CawnlayJus Tech, Pretoria, Gauteng",
+      "post": "Freelancer",
+      "from": "03/2015",
+      "to": "08/2016",
+      "reason_for_leaving": "Client project completion",
+      "current_public_service_condition": "No"
+    }
+  ],
+  
+  "references": [
+    {
+      "name": "Mr. Thabo Nkwe",
+      "relationship": "Previous Manager",
+      "telephone": "012 555 1234"
+    },
+    {
+      "name": "Ms. Sarah Mabaso",
+      "relationship": "Team Lead",
+      "telephone": "011 987 6543"
+    }
+  ],
+  
+  "declaration": {
+    "signature": "[Your Full Name]",
+    "date": "23/10/2026"
+  }
+}
