@@ -84,7 +84,8 @@ Email: fidelkekana@gmail.com
     message = EmailMessage()
     message["Subject"] = subject
     message["To"] = application["email"]
-    message["From"] = os.environ.get("SMTP_FROM", "noreply@example.com")
+    sender_value = os.environ.get("SMTP_FROM") or os.environ.get("GMAIL_USER") or "noreply@example.com"
+    message["From"] = sender_value
     message.set_content(body)
 
     pdf_path = ROOT / application["pdf"]
@@ -103,15 +104,23 @@ Email: fidelkekana@gmail.com
     return message
 
 
+def get_smtp_config():
+    gmail_user = os.environ.get("GMAIL_USER")
+    gmail_password = os.environ.get("GMAIL_APP_PASSWORD")
+    smtp_host = os.environ.get("SMTP_HOST") or ("smtp.gmail.com" if gmail_user else None)
+    smtp_port = os.environ.get("SMTP_PORT") or ("587" if gmail_user else "587")
+    smtp_username = os.environ.get("SMTP_USERNAME") or gmail_user
+    smtp_password = os.environ.get("SMTP_PASSWORD") or gmail_password
+
+    return smtp_host, int(smtp_port), smtp_username, smtp_password
+
+
 def send_email(message):
-    host = os.environ.get("SMTP_HOST")
-    port = int(os.environ.get("SMTP_PORT", "587"))
-    username = os.environ.get("SMTP_USERNAME")
-    password = os.environ.get("SMTP_PASSWORD")
+    host, port, username, password = get_smtp_config()
 
     if not host or not username or not password:
         raise RuntimeError(
-            "SMTP configuration is missing. Set SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, and SMTP_FROM as GitHub secrets."
+            "SMTP configuration is missing. Add Gmail secrets: GMAIL_USER and GMAIL_APP_PASSWORD, or SMTP_HOST/SMTP_USERNAME/SMTP_PASSWORD."
         )
 
     with smtplib.SMTP(host, port) as server:
