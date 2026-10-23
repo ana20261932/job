@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
+import base64
+import json
 import os
 import smtplib
 from email.message import EmailMessage
 from pathlib import Path
 
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+
 ROOT = Path(__file__).resolve().parent.parent
 MAX_TOTAL_ATTACHMENT_SIZE = 10 * 1024 * 1024  # 10MB
+SCOPES = ["https://mail.google.com/"]
+TOKEN_FILE = Path(os.environ.get("GMAIL_TOKEN_FILE", str(Path.home() / ".gmail_oauth_token.json")))
 
 APPLICATIONS = [
     {
@@ -139,8 +147,8 @@ Email: fidelkekana@gmail.com
     pdf_path = ROOT / application["pdf"]
     pdf_size = attach_file(message, pdf_path, "application/pdf", pdf_path.name)
 
-    cv_name = cv_path.name if cv_path else "CV.pdf"
     if cv_path:
+        cv_name = cv_path.name
         cv_size = attach_file(message, cv_path, "application/octet-stream", cv_name)
         if pdf_size + cv_size > MAX_TOTAL_ATTACHMENT_SIZE:
             raise ValueError(
@@ -148,6 +156,51 @@ Email: fidelkekana@gmail.com
             )
 
     return message
+
+
+def get_oauth_credentials():
+    client_id = os.environ.get("GMAIL_CLIENT_ID")
+    client_secret = os.environ.get("GMAIL_CLIENT_SECRET")
+    if not client_id or not client_secret:
+        raise RuntimeError("GMAIL_CLIENT_ID and GMAIL_CLIENT_SECRET are required for OAuth login")
+
+    creds = None
+    if TOKEN_FILE.exists():
+        try:
+            creds = Credentials.from_authorized_user_file(str(TOKEN_FILE), SCOPES)
+        except Exception:
+            creds = None
+
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_config(
+                {
+                    "installed": {
+                        "client_id": client_id,
+                        "client_secret": client_secret,
+                        "redirect_uris": ["http://localhost"],
+                        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                        "token_uri": "https://oauth2.googleapis.com/token",
+                        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                        "client_email": "",
+                        "client_x509_cert_url": "",
+                    }
+                },
+                SCOPES,
+            )
+            creds = flow.run_local_server(port=0)
+            TOKEN_FILE.parent.mkdir(parents=True, exist_ok=True)
+            with open(TOKEN_FILE, "w", encoding="utf-8") as fh:
+                fh.write(creds.to_json())
+
+    return creds
+
+
+def generate_xoauth2_string(username, access_token):
+    raw = f"user={username}\1auth=Bearer {access_token}\1\1"
+    return base64.b64encode(raw.encode("utf-8")).decode("ascii")
 
 
 def get_smtp_config():
@@ -162,11 +215,26 @@ def get_smtp_config():
 
 
 def send_email(message):
-    host, port, username, password = get_smtp_config()
+    if os.environ.get("GMAIL_CLIENT_ID") and os.environ.get("GMAIL_CLIENT_SECRET"):
+        credentials = get_oauth_credentials()
+        if not credentials or not credentials.valid:
+            raise RuntimeError("Unable to authorize Gmail OAuth credentials")
 
+        host, port, username, _ = get_smtp_config()
+        if not host or not username:
+            raise RuntimeError("SMTP host and Gmail user are required for OAuth send")
+
+        with smtplib.SMTP(host, port) as server:
+            server.starttls()
+            auth_string = generate_xoauth2_string(username, credentials.token)
+            server.docmd("AUTH", f"XOAUTH2 {auth_string}")
+            server.send_message(message)
+        return
+
+    host, port, username, password = get_smtp_config()
     if not host or not username or not password:
         raise RuntimeError(
-            "SMTP configuration is missing. Add Gmail secrets: GMAIL_USER and GMAIL_APP_PASSWORD, or SMTP_HOST/SMTP_USERNAME/SMTP_PASSWORD."
+            "SMTP configuration is missing. Set GMAIL_APP_PASSWORD or use GMAIL_CLIENT_ID/GMAIL_CLIENT_SECRET."
         )
 
     with smtplib.SMTP(host, port) as server:
